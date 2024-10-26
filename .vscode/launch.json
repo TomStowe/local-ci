@@ -1,0 +1,46 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run GitLab CI",
+        "type": "go",
+        "request": "launch",
+        "program": "${workspaceFolder}/main.go",
+        "args": [
+          "-type=gitlab",
+          "-file=${workspaceFolder}/test/.gitlab-ci.yml",
+          "-skip=skip1,skip2"
+        ],
+        "env": {},
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "Run Failing GitLab CI",
+        "type": "go",
+        "request": "launch",
+        "program": "${workspaceFolder}/main.go",
+        "args": [
+          "-type=gitlab",
+          "-file=${workspaceFolder}/test/.failing.gitlab-ci.yml"
+        ],
+        "env": {},
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "Run GitHub CI",
+        "type": "go",
+        "request": "launch",
+        "program": "${workspaceFolder}/main.go",
+        "args": [
+          "-type=github",
+          "-file=${workspaceFolder}/test/workflow.yml"
+        ],
+        "env": {},
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+  

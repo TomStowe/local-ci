@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        run: echo "Checking out the code..."
+      - name: Build
+        run: |
+          echo "Compiling the code..."
+          sleep 1
+          echo "Build completed."
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        run: echo "Checking out the code..."
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          sleep 1
+          echo "All tests passed."
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        run: echo "Checking out the code..."
+      - name: Deploy application
+        run: |
+          echo "Deploying the application..."
+          sleep 1
+          echo "Deployment successful."
