@@ -8,6 +8,8 @@ import (
 	"strings"
 
 	"github.com/fatih/color"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const (
@@ -41,25 +43,56 @@ func formatStepStatus(command string, status string, colorFunc func(a ...interfa
 	return fmt.Sprintf("║ %-50s %s ║", formattedCommand, statusFormatted)
 }
 
+func formatStatusHeader(stage models.Stage, stagesToSkip []string, stageToPrint, currentStage int, errOccurred bool) (*strings.Builder, bool) {
+	var tableBuilder strings.Builder
+	skipStage := string_utils.In(stage.Name, stagesToSkip)
+	stageName := stage.Name
+	colorFunc := color.New(color.FgWhite).SprintFunc()
+	if skipStage {
+		return &tableBuilder, true
+	} else if stageToPrint < currentStage {
+		colorFunc = color.New(color.FgGreen).SprintFunc()
+		stageName += " (Success)"
+		skipStage = true
+	} else if stageToPrint > currentStage {
+		colorFunc = color.New(color.FgCyan).SprintFunc()
+		stageName += " (Waiting)"
+		skipStage = true
+	} else if errOccurred {
+		colorFunc = color.New(color.FgRed).SprintFunc()
+		stageName += " (Failed)"
+	}
+
+	// Add the stage name header
+	headerColumnStart := "╠"
+	headerColumnEnd := "╣"
+	if skipStage {
+		headerColumnStart = "╚"
+		headerColumnEnd = "╝"
+	}
+
+	stageHeader := fmt.Sprintf(
+		"╔%s╗\n║   %-63s   ║\n%s%s%s",
+		createThickBorder(totalWidth),
+		colorFunc(cases.Title(language.English, cases.Compact).String(stageName)),
+		headerColumnStart,
+		createThickBorder(totalWidth),
+		headerColumnEnd)
+	tableBuilder.WriteString(stageHeader + "\n")
+	return &tableBuilder, skipStage
+}
+
 // PrintPipeline prints the current state of the pipeline in separate vertical tables.
 func PrintPipeline(pipeline models.Pipeline, currentStage int, currentStep int, errOccurred bool, stagesToSkip []string) {
 	clearScreen()
 
 	// Iterate through each stage and build the table
 	for i, stage := range pipeline.Stages {
-		var tableBuilder strings.Builder
-		skipStage := string_utils.In(stage.Name, stagesToSkip)
+		tableBuilder, skipTableBody := formatStatusHeader(stage, stagesToSkip, i, currentStage, errOccurred)
 
-		stageName := stage.Name
-		if skipStage {
-			stageName += " (Skip)"
-		}
-
-		// Add the stage name header
-		stageHeader := fmt.Sprintf("╔%s╗\n    %-20s    \n╠%s╣",
-			createThickBorder(totalWidth), "Stage: "+stageName, createThickBorder(totalWidth))
-		tableBuilder.WriteString(stageHeader + "\n")
-		if skipStage {
+		if skipTableBody {
+			fmt.Println(tableBuilder.String())
+			fmt.Println()
 			continue
 		}
 
