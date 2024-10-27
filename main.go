@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
-	"local-ci/src/executor"
-	"local-ci/src/models"
-	"local-ci/src/parsers"
 	"os"
 	"strings"
+
+	"github.com/TomStowe/local-ci/src/executor"
+	"github.com/TomStowe/local-ci/src/models"
+	"github.com/TomStowe/local-ci/src/parsers"
 )
 
 func main() {

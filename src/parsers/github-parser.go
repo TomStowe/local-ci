@@ -2,8 +2,9 @@ package parsers
 
 import (
 	"fmt"
-	"local-ci/src/models"
 	"os"
+
+	"github.com/TomStowe/local-ci/src/models"
 
 	"gopkg.in/yaml.v2"
 )

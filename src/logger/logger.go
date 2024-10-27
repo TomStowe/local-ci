@@ -3,9 +3,10 @@ package logger
 
 import (
 	"fmt"
-	"local-ci/src/models"
-	string_utils "local-ci/src/utils"
 	"strings"
+
+	"github.com/TomStowe/local-ci/src/models"
+	string_utils "github.com/TomStowe/local-ci/src/utils"
 
 	"github.com/fatih/color"
 	"golang.org/x/text/cases"

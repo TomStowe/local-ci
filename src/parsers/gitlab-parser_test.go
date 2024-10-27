@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"local-ci/src/models"
+	"github.com/TomStowe/local-ci/src/models"
 )
 
 // Helper function to write a temporary YAML file for testing

@@ -2,12 +2,13 @@ package executor
 
 import (
 	"fmt"
-	"local-ci/src/logger"
-	"local-ci/src/models"
-	string_utils "local-ci/src/utils"
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/TomStowe/local-ci/src/logger"
+	"github.com/TomStowe/local-ci/src/models"
+	string_utils "github.com/TomStowe/local-ci/src/utils"
 )
 
 // RunPipeline executes the stages and steps of a given pipeline.

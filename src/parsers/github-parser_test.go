@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"local-ci/src/models"
+	"github.com/TomStowe/local-ci/src/models"
 )
 
 // TestParseGitHubCI tests the ParseGitHubCI function for various scenarios.
