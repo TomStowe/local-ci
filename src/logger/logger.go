@@ -110,7 +110,7 @@ func PrintPipeline(pipeline models.Pipeline, currentStage int, currentStep int, 
 			}
 
 			// Add formatted step status to the table
-			tableBuilder.WriteString(formatStepStatus(step.Command, status, colorFunc) + "\n")
+			tableBuilder.WriteString(formatStepStatus(step.Name, status, colorFunc) + "\n")
 		}
 
 		// Add the bottom border to the table

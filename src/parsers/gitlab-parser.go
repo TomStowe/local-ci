@@ -22,9 +22,19 @@ func ParseGitLabCI(filename string) (models.Pipeline, error) {
 
 	var pipeline models.Pipeline
 	stagesMap := make(map[string]models.Stage)
+	var stageOrder []string
+
+	// Parse the stages order if specified
+	if stages, ok := config["stages"].([]interface{}); ok {
+		for _, stage := range stages {
+			if stageName, ok := stage.(string); ok {
+				stageOrder = append(stageOrder, stageName)
+			}
+		}
+	}
 
 	// Iterate over jobs in the GitLab CI configuration
-	for jobName, jobValue := range config {
+	for _, jobValue := range config {
 		jobMap, ok := jobValue.(map[interface{}]interface{})
 		if !ok {
 			continue
@@ -48,13 +58,28 @@ func ParseGitLabCI(filename string) (models.Pipeline, error) {
 				command, ok := step.(string)
 				if ok {
 					stage.Steps = append(stage.Steps, models.Step{
-						Name:    jobName,
+						Name:    command,
 						Command: command,
 					})
 				}
 			}
 		}
 
+		stagesMap[stageName] = stage // Update the map with the modified stage
+	}
+
+	// Arrange stages based on the stageOrder or the order they appear in the map
+	if len(stageOrder) > 0 {
+		for _, stageName := range stageOrder {
+			if stage, exists := stagesMap[stageName]; exists {
+				pipeline.Stages = append(pipeline.Stages, stage)
+				delete(stagesMap, stageName) // Remove from map after adding to pipeline
+			}
+		}
+	}
+
+	// Add any remaining stages not listed in the stageOrder
+	for _, stage := range stagesMap {
 		pipeline.Stages = append(pipeline.Stages, stage)
 	}
 

@@ -26,6 +26,12 @@ func writeTempYAML(t *testing.T, content string) string {
 func TestParseGitLabCI(t *testing.T) {
 	// Test case 1: Valid GitLab CI YAML
 	validYAML := `
+steps:
+  - build
+  - test
+  - deploy
+
+
 build:
   stage: build
   script:
@@ -49,13 +55,13 @@ deploy:
 
 	expectedStages := []models.Stage{
 		{Name: "build", Steps: []models.Step{
-			{Name: "build", Command: "echo \"Building...\""},
+			{Name: "echo \"Building...\"", Command: "echo \"Building...\""},
 		}},
 		{Name: "test", Steps: []models.Step{
-			{Name: "test", Command: "echo \"Running tests\""},
+			{Name: "echo \"Running tests\"", Command: "echo \"Running tests\""},
 		}},
 		{Name: "deploy", Steps: []models.Step{
-			{Name: "deploy", Command: "echo \"Deploying application\""},
+			{Name: "echo \"Deploying application\"", Command: "echo \"Deploying application\""},
 		}},
 	}
 
