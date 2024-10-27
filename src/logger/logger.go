@@ -108,6 +108,9 @@ func PrintPipeline(pipeline models.Pipeline, currentStage int, currentStep int, 
 			} else if errOccurred && i == currentStage && j == currentStep {
 				status = "Failed "
 				colorFunc = color.New(color.FgRed).SprintFunc()
+			} else if i == currentStage && j == currentStep {
+				status = "Running"
+				colorFunc = color.New(color.FgCyan).SprintFunc()
 			}
 
 			// Add formatted step status to the table
