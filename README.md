@@ -7,6 +7,12 @@ Local CI is a command-line tool for running and testing CI/CD pipelines locally.
 
 ## Usage
 
+Install the package by using
+
+```bash
+go install github.com/TomStowe/local-ci@latest
+```
+
 ```bash
 local-ci [options]
 
